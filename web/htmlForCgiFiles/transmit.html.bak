@@ -1,0 +1,156 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+
+<script language="javascript" type="text/javascript" src="/formoper.js">
+</script>
+
+<script language="javascript" type="text/javascript">
+
+function jsSubmit0(){
+	
+	if(jsErrorInputIp(document.forms[0].su_ip, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputFloat(document.forms[0].su_port,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputMac(document.forms[0].su_mac, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	
+	if(jsErrorInputIp(document.forms[0].de_ip0, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip1, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip2, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip3, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip4, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip5, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip6, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	if(jsErrorInputIp(document.forms[0].de_ip7, "IP input error! Please enter again.\n e.g.,192.168.1.232.")){return false;}
+	
+	if(jsErrorInputFloat(document.forms[0].de_port0,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port1,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port2,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port3,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port4,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port5,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port6,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	if(jsErrorInputFloat(document.forms[0].de_port7,1,65535, "IP input error! Please enter again.\n The range of parameters  1-65535 .")){return false;}
+	
+	if(jsErrorInputMac(document.forms[0].de_mac0, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac1, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac2, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac3, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac4, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac5, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac6, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+	if(jsErrorInputMac(document.forms[0].de_mac7, "IP input error! Please enter again.\n e.g.,00:1A:A0:01:02:03.")){return false;}
+		
+	document.getElementById('result').innerHTML = "Setting ...";
+	return true;
+}
+function jsSubmit1(){
+	return true;
+}
+</script>
+</head>
+
+
+
+<body>
+<div id="contentBase" align="center">
+	<form method="POST">
+		<div align="left" id="contentTop"><strong>TS OVER IP Source		</strong></div>
+		<div id="contentCenter"">
+			<table class="inputTable" >
+					<th>Source&nbsp IP:</th>
+					<td><input name="su_ip" type="text" size="13" maxlength="15" value="@@formparams['su_ip']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="su_port" type="text" size="5" maxlength="5" value="@@formparams['su_port']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="su_mac" type="text" size="17" maxlength="17" value="@@formparams['su_mac']"></td>
+					<td>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+					<!--<th>&nbsp&nbsp&nbsp&nbsp TTL: </th>-->
+					<td><input name="udp_ttl" type="hidden" size="5" maxlength="3" value="@@formparams['udp_ttl']"></td><!--<td><input name="udp_ttl" type="text" size="5" maxlength="3" value="@@formparams['udp_ttl']"></td>恢复显示-->
+			</table>
+		</div>
+				<div align="left" id="contentTop"><strong>TS OVER IP Target		</strong></div>
+		<div id="contentCenter"    height:15px; overflow:scroll; overflow-x:hidden;">
+			<table class="inputTable" >
+				  <tr> 
+					<th>Channel-1&nbsp IP:</th>
+					<td><input name="de_ip0" type="text" size="15" maxlength="15" value="@@formparams['de_ip0']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port0" type="text" size="15" maxlength="15" value="@@formparams['de_port0']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac0" type="text" size="17" maxlength="17" value="@@formparams['de_mac0']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-2&nbsp IP:</th>
+					<td><input name="de_ip1" type="text" size="15" maxlength="15" value="@@formparams['de_ip1']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port1" type="text" size="15" maxlength="15" value="@@formparams['de_port1']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac1" type="text" size="17" maxlength="17" value="@@formparams['de_mac1']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-3&nbsp IP:</th>
+					<td><input name="de_ip2" type="text" size="15" maxlength="15" value="@@formparams['de_ip2']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port2" type="text" size="15" maxlength="15" value="@@formparams['de_port2']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac2" type="text" size="17" maxlength="17" value="@@formparams['de_mac2']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-4&nbsp IP:</th>
+					<td><input name="de_ip3" type="text" size="15" maxlength="15" value="@@formparams['de_ip3']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port3" type="text" size="15" maxlength="15" value="@@formparams['de_port3']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac3" type="text" size="17" maxlength="17" value="@@formparams['de_mac3']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-5&nbsp IP:</th>
+					<td><input name="de_ip4" type="text" size="15" maxlength="15" value="@@formparams['de_ip4']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port4" type="text" size="15" maxlength="15" value="@@formparams['de_port4']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac4" type="text" size="17" maxlength="17" value="@@formparams['de_mac4']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-6&nbsp IP:</th>
+					<td><input name="de_ip5" type="text" size="15" maxlength="15" value="@@formparams['de_ip5']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port5" type="text" size="15" maxlength="15" value="@@formparams['de_port5']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac5" type="text" size="17" maxlength="17" value="@@formparams['de_mac5']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-7&nbsp IP:</th>
+					<td><input name="de_ip6" type="text" size="15" maxlength="15" value="@@formparams['de_ip6']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port6" type="text" size="15" maxlength="15" value="@@formparams['de_port6']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac6" type="text" size="17" maxlength="17" value="@@formparams['de_mac6']"></td>
+				  </tr>
+				  <tr> 
+					<th>Channel-8&nbsp IP:</th>
+					<td><input name="de_ip7" type="text" size="15" maxlength="15" value="@@formparams['de_ip7']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Port:</th>
+					<td><input name="de_port7" type="text" size="15" maxlength="15" value="@@formparams['de_port7']"></td>
+					<th>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MAC:</th>
+					<td><input name="de_mac7" type="text" size="17" maxlength="17" value="@@formparams['de_mac7']"></td>
+				  </tr>
+			</table>
+		</div>
+		<div id="contentBottom">
+			<input type="submit" name="set_ts_ip" value="Save" onClick="return jsSubmit0();">
+			<input type="submit" name="get_ts_ip" value="Refresh" onClick="return jsSubmit1();">
+		</div>
+	</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<style type="text/css">
+.noticeDiv {
+	padding-top:10px;
+	padding-left:10px;
+	width:560px;
+	text-align:left;
+}
+</style>
+
+<script language="javascript">
+function jsSubmitUpload(){
+	var isIE = /msie/i.test(navigator.userAgent) && !window.opera;
+	var target = document.getElementById("uploadFile");
+	var fileSize = 0;
+	
+	if(isIE && !target.files){
+		var filePath = target.value;      
+		alert("filePath = " + filePath);
+		var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+		if(fileSystem){
+			var file = fileSystem.GetFile(filePath);
+			if(file){
+				fileSize = file.Size; 
+			}
+		}
+	} else if(target.files[0]){
+		fileSize = target.files[0].size;		
+	}
+	alert(fileSize);
+	return false;
+}
+function jsSubmitFactory(){
+	if(window.confirm("Need to restore the device to factory settings?"))
+		return true;
+	else
+		return false;
+}
+function jsSubmitReboot(){
+	if(window.confirm("Need to reboot the device?"))
+		return true;
+	else
+		return false;
+}
+</script>
+
+<script language="javascript">
+var time=0;    
+var delay_time=1000;    
+var loop_num=0;    
+
+function getRefToDivNest(divID, oDoc)   
+{    
+	if( !oDoc ) { 
+		oDoc = document; 
+	}  
+	if( document.layers ) {
+		if( oDoc.layers[divID] ) { 
+			return oDoc.layers[divID]; 
+		} else {  
+			for( var x = 0, y; !y && x < oDoc.layers.length; x++ ) {  
+				y = getRefToDivNest(divID,oDoc.layers[x].document); 
+			}  
+			return y; 
+		} 
+	}  
+	if( document.getElementById ) { 
+		return document.getElementById(divID); 
+	}  
+	if( document.all ) 	{ 
+		return document.all[divID]; 
+	}  
+	return document[divID];  
+}  
+  
+function progressBar( oBt, oBc, oBg, oBa, oWi, oHi, oDr )   
+{  
+	MWJ_progBar++; 
+	this.id = 'MWJ_progBar' + MWJ_progBar; 
+	this.dir = oDr; this.width = oWi; 
+	this.height = oHi; 
+	this.amt = 0; 
+  //write the bar as a layer in an ilayer in two tables giving the border  
+	document.write( '<span id = "progress_div" class = "off" > <table border="0" cellspacing="0" cellpadding="'+oBt+'">'+    
+    '<tr><td>Please wait...</td></tr><tr><td bgcolor="'+oBc+'">'+  
+        '<table border="0" cellspacing="0" cellpadding="0"><tr><td height="'+oHi+'" width="'+oWi+'" bgcolor="'+oBg+'">' );  
+  if( document.layers ) {  
+    document.write( '<ilayer height="'+oHi+'" width="'+oWi+'"><layer bgcolor="'+oBa+'" name="MWJ_progBar'+MWJ_progBar+'"></layer></ilayer>' );    
+  } else {  
+    document.write( '<div style="position:relative;top:0px;left:0px;height:'+oHi+'px;width:'+oWi+';">'+  
+            '<div style="position:absolute;top:0px;left:0px;height:0px;width:0;font-size:1px;background-color:'+oBa+';" id="MWJ_progBar'+MWJ_progBar+'"></div></div>' );  
+  }  
+  document.write( '</td></tr></table></td></tr></table></span>\n' );  
+  this.setBar = resetBar; //doing this inline causes unexpected bugs in early NS4  
+  this.setCol = setColour;  
+}  
+
+function resetBar( a, b )     
+{  
+  //work out the required size and use various methods to enforce it  
+  this.amt = ( typeof( b ) == 'undefined' ) ? a : b ? ( this.amt + a ) : ( this.amt - a );  
+  if( isNaN( this.amt ) ) 
+  { this.amt = 0; } if( this.amt > 1 ) { this.amt = 1; } if( this.amt < 0 ) { this.amt = 0; }  
+  
+  var theWidth = Math.round( this.width * ( ( this.dir % 2 ) ? this.amt : 1 ) );  
+  var theHeight = Math.round( this.height * ( ( this.dir % 2 ) ? 1 : this.amt ) );  
+  var theDiv = getRefToDivNest( this.id ); 
+  if( !theDiv ) 
+  { window.status = 'Progress: ' + Math.round( 100 * this.amt ) + '%'; return; }  
+  
+  if( theDiv.style ) 
+  { theDiv = theDiv.style; theDiv.clip = 'rect(0px '+theWidth+'px '+theHeight+'px 0px)'; }  
+  
+  var oPix = document.childNodes ? 'px' : 0;  
+  theDiv.width = theWidth + oPix; theDiv.pixelWidth = theWidth; theDiv.height = theHeight + oPix; theDiv.pixelHeight = theHeight;  
+  
+  if( theDiv.resizeTo ) 
+  { theDiv.resizeTo( theWidth, theHeight ); }  
+  
+  theDiv.left = ( ( this.dir != 3 ) ? 0 : this.width - theWidth ) + oPix; 
+  theDiv.top = ( ( this.dir != 4 ) ? 0 : this.height - theHeight ) + oPix;  
+}  
+
+function setColour( a )    
+{  
+  //change all the different colour styles  
+  var theDiv = getRefToDivNest( this.id ); if( theDiv.style ) { theDiv = theDiv.style; } 
+  theDiv.bgColor = a; theDiv.backgroundColor = a; theDiv.background = a;
+}  
+  
+function show_div(show,id) {  
+	if(show){  
+	document.getElementById(id).style.display  = "block";  
+	}else{  
+	document.getElementById(id).style.display  = "none";  
+}}  
+  
+function progress()  {
+	if (time < 1){
+		time = time + 0.033;}    
+	else {time = 0;    
+		loop_num++;    
+	}  
+  setTimeout('progress()',delay_time);  
+  myProgBar.setBar(time);  
+}
+
+function sendClicked(F){ 
+	if(document.uploadForm.uploadFile.value == ""){  
+		document.uploadForm.uploadFile.focus();  
+		alert('Please select upgrade package!');  
+		return false;  
+	}  
+	F.submit();  
+	show_div(true, "progress_div");
+	progress();
+}  
+ 
+function init(){
+	show_div(0, "progress_div");
+}    
+</script>  
+</head>
+
+<body onload=init();>
+<div id="contentBase" align="center">
+	<form name="uploadForm" enctype="multipart/form-data" action="upload.cgi" method="post" target="hidden_frame">
+		<div id="contentTop">Device upgrade
+		</div>
+		<div id="contentCenter"> 
+			<table class="inputTable" align="center" width=600px;>
+				<tr>
+					<th width="100px">Load upgrade package:</th>
+					<td>
+				<!--	<input name="MIN_FILE_SIZE" type="hidden" value="1024">
+					<input name="MAX_FILE_SIZE" type="hidden" value="3145728"> -->
+					<input name="uploadFile" type="file" id="uploadFile" size="50"/></td>
+				<tr>
+				<tr>
+					&nbsp;
+					&nbsp;
+				</tr>
+				<tr>
+					<th>&nbsp;</th>
+					<td><input type="button" name="uploadSubmit" value="Upgrade" onclick=sendClicked(this.form) /></td>
+				</tr>
+				<tr>
+					<th>Hardware version:</th>
+					<td><div id="verHw">@@formparams['verHw']</div></td>
+				</tr>
+				<tr>
+					<th>Software version:</th>
+					<td><div id="verSw">@@formparams['verSw']</div></td>
+				</tr>
+				<tr>
+					<th>Firmware version:</th>
+					<td><div id="verFw">@@formparams['verFw']</div></td>
+				</tr>
+			</table>
+		<iframe name='hidden_frame' id="hidden_frame" style='display:none'></iframe>  
+
+		<div id="current_directory" style="display:none"></div>
+
+			<p class="noticeDiv"><strong>Note:</strong><font color="red">Please select the corresponding software with the hardware.</font>
+The upgrade process can not turn off the power, otherwise it will result in equipment damage and can not be used. Upgrade package upload process about a few seconds to several minutes (Watch speed), after the end of the upgrade package to upload, you need to manually restart the device to complete the upgrade.</p>
+			<p class="noticeDiv"><strong>Capion:</strong>When you use a browser based on IE kernel, please enable "Microsoft &reg; Script Runtime". And allow "interactive ActiveX controls on this page and in other parts of the page."</p>
+		</div>
+</form>
+
+<iframe name='hidden_frame' id="hidden_frame" style='display:none'></iframe>  
+<script type="text/javascript" language="javascript1.2">  
+	var MWJ_progBar = 0;  
+	var myProgBar = new progressBar(1,'#DDDDDD','#DDDDDD','#0000A0',300,15,1); 
+</script>
+<div id="current_directory" style="display:none"></div></body>  
+	
+<form method="POST" enctype="multipart/form-data">
+		<div id="contentTop">Restore factory settings
+		</div>
+		<div id="contentCenter"> 
+			<table class="inputTable" align="center">
+				<tr>
+					<th width="100px"></th>
+					<td><input type="submit" name="factorySubmit" value="Restore" onclick="return jsSubmitFactory()" /></td>
+				</tr>
+			</table>
+			<p class="noticeDiv"><strong>Note:</strong>"Restore factory settings"<font color="red">Does not affect the network settings</font>!When complete, the device will automatically reboot.</p>
+		</div>
+</form>
+<form method="POST" enctype="multipart/form-data">
+		<div id="contentTop">Reboot device
+		</div>
+		<div id="contentCenter"> 
+			<table class="inputTable" align="center">
+				<tr>
+					<th width="100px"></th>
+					<td><input type="submit" name="rebootSubmit" value="Reboot"  onclick="return jsSubmitReboot()" /></td>
+				<tr>
+			</table>	
+		</div>
+	</form>
+</div>
+</body>
+</html>

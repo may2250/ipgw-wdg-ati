@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+<script  src='/jquery-1.4.2.js' type=text/javascript></script>
+<script  src='/Blob.js' type=text/javascript></script>
+<script  src='/FileSaver.js' type=text/javascript></script>
+<script language="javascript" type="text/javascript" src="/formoper.js">
+</script>
+
+<script language="javascript" type="text/javascript">
+    function back_import() {
+        return true;;
+    };
+    
+    function back_export() {
+        function writeFile(data) {
+            var BB = this.Blob;
+            saveAs(
+                  new BB(
+                      [data]
+                    , {type: "text/plain;charset=" + document.characterSet}
+                )
+                , "bakup.json"
+            );
+          }
+        //get back up data
+        $.ajax({
+            type: "GET",
+            url: "/cgi-bin/index.cgi?Export=1",
+            dataType: "json",
+            success: function(data){
+                alert(JSON.stringify(data));
+                writeFile(JSON.stringify(data));          
+                 
+            },
+            error : function(err) {
+                alert("AJAX ERROR---downloads!!");
+            }
+        });
+        return true;
+    }
+    document.getElementById("btn_import").disabled = true;
+    
+    function upload(input) {
+        //支持chrome IE10
+        if (window.FileReader) {
+            var file = input.files[0];
+            filename = file.name.split(".")[0];
+            var reader = new FileReader();
+            reader.onload = function() {
+                var paramjson = this.result;
+                $('#updatas').val($.trim(paramjson));
+                if(JSON.parse(paramjson) == "undefined"){
+                    document.getElementById("btn_import").disabled = true;
+                    return;
+                }
+                document.getElementById("btn_import").disabled = false;
+            }
+            reader.readAsText(file);
+        } 
+        //支持IE 7 8 9 10
+        else if (typeof window.ActiveXObject != 'undefined'){
+            var xmlDoc; 
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
+            xmlDoc.async = false; 
+            xmlDoc.load(input.value); 
+            var paramjson = xmlDoc.xml;
+            //post file content
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "/cgi-bin/index.cgi?Import=1",
+                data: JSON.parse(paramjson),
+                dataType: "json",
+                success: function(data){
+                    if(data.sts == 8){
+                        window.location = "/login.esp";
+                    }else if(data.sts == 5){
+                        alert(globalObj._nv == "zh-CN"?"该用户权限不足.":"Permission Denied!");
+                        return false;
+                    }
+                },
+                error : function(err) {
+                     alert("AJAX ERROR---uploads!!");
+                }
+            });
+        } 
+      //支持FF
+        else if (document.implementation && document.implementation.createDocument) { 
+            var xmlDoc; 
+            xmlDoc = document.implementation.createDocument("", "", null); 
+            xmlDoc.async = false; 
+            xmlDoc.load(input.value); 
+            var paramjson = xmlDoc.xml;
+            //post file content
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "/cgi-bin/index.cgi?Import=1",
+                data: JSON.parse(paramjson),
+                dataType: "json",
+                success: function(data){
+                    if(data.sts == 8){
+                        window.location = "/login.esp";
+                    }else if(data.sts == 5){
+                        alert(globalObj._nv == "zh-CN"?"该用户权限不足.":"Permission Denied!");
+                        return false;
+                    }
+                    
+                },
+                error : function(err) {
+                    alert("AJAX ERROR---uploads!!");
+                }
+            });
+        } else { 
+            alert('error'); 
+        } 
+    }
+    
+    function fchange(){
+        
+        upload($('#file1')[0]);
+    };
+
+</script>
+</head>
+<body>
+    <div id="contentBase" align="center">
+        <div align="left" id="contentTop"><strong>EXPORT</strong></div>
+        <div id="contentCenter"">
+            <input type="button" id="btn_export" class="i18n_BTNIMPORT" value="EXPORT" onClick="return back_export();" />
+        </div>
+        <div align="left" id="contentTop"><strong>IMPORT</strong></div>
+		<div id="contentCenter">
+            File:<input id="file1" type="file" name="file1" onchange="return fchange();" />
+            <form id="updataform" name="Import" method="post" action="/cgi-bin/index.cgi?Import=1">
+                <table border="0">
+                    <tr><td><input type="text" id="updatas" style="display:none" name="updatas" value="@@formparams['updatas']" /></td></tr>
+                </table>
+                <br />
+                <input type="submit" id="btn_import" name="Import" value="IMPORT" onClick="return back_import();"/>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

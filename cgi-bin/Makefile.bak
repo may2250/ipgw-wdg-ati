@@ -1,0 +1,65 @@
+ifeq ($(RUN_OS),)
+RUN_OS := 0
+endif
+
+################################
+ifeq ($(RUN_OS), 0)
+#----------------------------------------------------------------------------------
+CROSS_TOOL = 
+LIBCGI_NAME = libcgic_pc.a
+CFLAGS=-o2 -Wall -DPC_OS
+TARGET_FOLD = ../cgi-bin
+#----------------------------------------------------------------------------------
+endif
+################################
+ifeq ($(RUN_OS), 2)
+#----------------------------------------------------------------------------------
+CROSS_TOOL = arm-linux-
+LIBCGI_NAME = libcgic_arm.a
+CFLAGS=-o2 -Wall -DARM_OS
+TARGET_FOLD = /mnt/wdt-ati/
+#----------------------------------------------------------------------------------
+endif
+################################
+
+CC=$(CROSS_TOOL)gcc
+AR=$(CROSS_TOOL)ar
+LD=$(CROSS_TOOL)ld
+
+LIBS=-L./ $(LIBCGI_NAME)
+
+APP_H = -I ../../app/
+
+all: index.cgi upload.cgi
+
+index.cgi: index.o web.o udpsend.o tcpClient.o cmd.o $(LIBCGI_NAME)
+	$(CC) $(CFLAGS) index.o web.o udpsend.o tcpClient.o cmd.o -o index.cgi ${LIBS} 
+index.o: index.c 
+	$(CC) $(CFLAGS)  $(APP_H) -c  index.c -o index.o
+
+web.o: web.c  web.h
+	$(CC) $(CFLAGS)  $(APP_H) -c web.c -o web.o
+
+cmd.o: cmd.c cmd.h 
+	$(CC) $(CFLAGS)  $(APP_H) -c cmd.c -o cmd.o
+	
+udpsend.o: udpsend.c udpsend.h
+  $(CC) $(CFLAGS)  $(APP_H) -c udpsend.c -o udpsend.o
+  
+  
+tcpClient.o: tcpClient.c tcpClient.h 
+	$(CC) $(CFLAGS)  $(APP_H) -c tcpClient.c -o tcpClient.o
+	 
+#upload.o: upload.c upload.h 
+#	$(CC) $(CFLAGS)  $(APP_H) -c upload.c -o upload.o
+
+upload.cgi: upload.c upload.h
+	$(CC) $(CFLAGS) upload.c -o upload.cgi ${LIBS}
+
+install: index.cgi upload.cgi
+	cp -rf index.cgi $(TARGET_FOLD)/
+	cp -rf upload.cgi $(TARGET_FOLD)/
+	
+clean:
+	rm -f *.o index.cgi # upload.cgi
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+<script type="text/javascript">
+function applySelectedTo(btn)
+{
+	var ul = document.getElementsByTagName("ul")[0];
+	var allLinks = ul.getElementsByTagName("a");
+	for (var i=0; i<allLinks.length; i++)
+	{
+ 		allLinks[i].style.backgroundColor = "#EBF3FC";
+		allLinks[i].style.color= "#0066CC";
+		allLinks[i].selected = false;
+	}
+	//var btn =document.getElementById(btnId);
+	if(btn != null)
+	{
+		btn.selected = true;
+		btn.style.backgroundColor = "#FFFFFF";
+		btn.style.color = "#003C77";
+	}
+}
+</script>
+<script type="text/javascript">
+function jsOnMouseOver(btn)
+{
+	//var btn =document.getElementById(btnId);
+	if(btn != null)
+	{
+		btn.style.backgroundColor = "#FFFFFF";
+		btn.style.color = "#003C77";
+	}
+}
+</script>
+<script type="text/javascript">
+function jsOnMouseOut(btn)
+{
+	//var btn =document.getElementById(btnId);
+	if(btn != null)
+	{
+		if(btn.selected != true)
+		{
+			btn.style.backgroundColor = "#EBF3FC";
+			btn.style.color = "#0066CC";
+		}
+	}
+}
+</script>
+</head>
+
+<body>
+	<div class="menudiv">
+		<div id="menuBtndiv">
+			<ul>
+				<li><a id="mStatus=1" href="status.html" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Status</a></li>	
+				
+				<li><a id="mChannel=1" href="/cgi-bin/index.cgi?channel=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-1</a></li>
+				<li><a id="mChannel=2" href="/cgi-bin/index.cgi?channel=2" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-2</a></li>
+				<li><a id="mChannel=3" href="/cgi-bin/index.cgi?channel=3" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-3</a></li>
+				<li><a id="mChannel=4" href="/cgi-bin/index.cgi?channel=4" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-4</a></li>
+				<li><a id="mChannel=5" href="/cgi-bin/index.cgi?channel=5" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-5</a></li>
+				<li><a id="mChannel=6" href="/cgi-bin/index.cgi?channel=6" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-6</a></li>
+				<li><a id="mChannel=7" href="/cgi-bin/index.cgi?channel=7" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-7</a></li>
+				<li><a id="mChannel=8" href="/cgi-bin/index.cgi?channel=8" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Channel-8</a></li>
+				<!--li><a id="mTsOut" href="/htmlForCgiFiles/output.html" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">TS Output</a></li-->
+				<li><a id="mSend" href="/cgi-bin/index.cgi?transmit=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">TS Over IP</a></li>
+				<li><a id="mNet" href="/cgi-bin/index.cgi?net=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Network</a></li>
+				<li><a id="mUpload" href="/cgi-bin/index.cgi?system=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">System</a></li>
+				<li><a id="mBackup" href="/cgi-bin/index.cgi?backup=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">Backup</a></li>
+			</ul>
+		</div>
+	</div>
+<script type="text/javascript">
+<!--
+	var btn = document.getElementById("mStatus"); 
+	if(btn != null)
+	{
+		btn.click();	
+	}
+-->
+</script>
+</body>
+</html>

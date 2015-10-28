@@ -1,0 +1,57 @@
+---- TCP_SVC_IP Matches (13 in 2 files) ----
+Cmd.c:67
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return;
+    if(Cmd_rwParam(cmdSearchPrg, 6, rdBuf, 1024, 5) < 5)/*搜索节目*/
+Cmd.c:116
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return;
+	
+Cmd.c:133
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return 0 ;
+
+Cmd.c:160
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return 0 ;
+
+Cmd.c:195
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return;
+	
+Cmd.c:357
+		 if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+			return 0;
+	
+Cmd.c:537
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return 0;
+    if(Cmd_rwParam(cmdGetIp, 6, rdBuf, 20, 5) < 5)/*获取IP地址*/
+Cmd.c:601
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+	return 0;
+	if(Cmd_rwParam(cmdSetGateway,9, rdBuf, 20, 5) < 5)/*设置Gateway地址*/
+Cmd.c:629
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+		return 0;
+	wrBuf[0]=0x77;wrBuf[1]=0x6c;wrBuf[2]=0xf1;wrBuf[3]=0x01;wrBuf[4]=0x01;wrBuf[5]=0x01;
+Cmd.c:739
+	if(TcpClt_connect(TCP_SVC_IP, TCP_SVC_PORT) < 0)
+	return 0;
+
+Cmd.h:9
+#define TCP_SVC_IP 0x2a00a8c0/*192.168.0.42*/
+//#define TCP_SVC_IP 0x8300a8c0/*192.168.0.131*/
+
+#endif
+Cmd.h:14
+#define TCP_SVC_IP 0x0100007f
+#endif
+
+Cmd.h:29
+//#define TCP_SVC_IP 0x2a00a8c0/*192.168.0.42*/
+//#define TCP_SVC_IP 0x8000a8c0/*192.168.0.128*/
+//#define TCP_SVC_IP 0x8300a8c0/*192.168.0.131*/
+//#define TCP_SVC_IP 0x2e00a8c0/*192.168.0.46*/
+
+

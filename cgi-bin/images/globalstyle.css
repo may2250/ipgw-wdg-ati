@@ -1,0 +1,243 @@
+@charset "utf-8";
+body {
+	background-color: #FFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 12px;
+	color: #336699;
+}
+
+td, th {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 24px;
+	color: #333333;
+	border: 0;
+}
+
+.headlable {
+	background-color:#0CF;
+	text-align:left;
+	width:150px;
+}
+
+.setheadlable {
+	background-color:#0CF;
+	text-align:left;
+	width:138px;
+}
+
+.titlelable {
+	background-color:#09C;
+	text-align:center;
+}
+
+.headtitlelable {
+	background-color:#6CF;
+	text-align:center;
+	width:auto;
+}
+
+.submit {
+	text-align:center;
+}
+
+.contenttext
+{
+	width:100px;
+}
+
+.contentselect {
+	text-align:center;
+	width:100px;
+}
+
+.contentcheckbox{
+	text-align:center;
+	width:30px;
+}
+
+.umhead{
+	width:150px;
+}
+
+.fsbox {
+	border-color: #CCCCCC #333333 #333333 #CCCCCC;
+	border-width: large;
+	line-height: 24px;
+	font-size: 24px;
+}
+.rebox {
+	text-align:center;
+	border-color: #CCCCCC #333333 #333333 #CCCCCC;
+	border-width: large;
+	line-height: 24px;
+	font-size: 24px;
+}
+.statustable {
+	text-align:center;
+	width:80px;
+}
+
+.statusheadlable {
+	background-color:#0CF;
+	text-align:center;
+	width:130px;
+}
+
+.guideproducttablehead{
+	width:60px;
+}
+.guideproducttablevalue{
+	width:160px;
+}
+
+a {
+	color: #660;
+	text-decoration: none;
+}
+
+a:link {
+	color: #036;
+} /* 未访问的链接 */
+a:visited {color: #036;} /* 已访问的链接 */
+a:hover {
+	text-decoration: underline;
+	color: #000;
+} /* 鼠标移动到链接上 */
+a:active {color: #000;} /* 选定的链接 */
+
+form {
+	background-color: #CCCC99;
+}
+
+.title {
+	font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+	line-height: 30px;
+  background-color: #006666;
+	color: #DCDCDC;
+}
+
+.logintitle {
+	font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+	line-height: 50px;
+  background-color: #006666;
+	color: #DCDCDC;
+}
+
+.subtitle {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: bold;
+  color: #006666;
+}
+
+.header {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	background-color: #006666;
+  color: #DCDCDC;
+}
+
+.nav {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+  font-weight: bold;
+	background-color: #CCCCCC;
+}
+
+.navLink {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	background-color: #DEDECA;
+}
+
+.sidebar {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	padding: 3px;
+	background-color: #FFFFFF;
+}
+
+.sidebarHeader {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	color: #FFFFFF;
+	background-color: #339999;
+}
+
+.sidebarFooter {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	background-color: #CCCCCC;
+}
+
+.footer {
+  font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 22px;
+	color: #333333;
+	background-color: #CCCCCC;
+}
+
+.legal {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #333333;
+}
+
+.box1 {
+	border-color: #CCCCCC #333333 #333333 #CCCCCC;
+	border-width: medium;
+  border-style: ridge;
+}
+
+.loginbox {
+	border-color: #CCCCCC #333333 #333333 #CCCCCC;
+	border-width: medium;
+  	border-style: dotted
+    height:80px;
+}
+
+.promo {
+	font-family: "Times New Roman", Times, serif;
+	color: #000033;
+}
+
+.titlebar {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 9px;
+	color: #FFFFFF;
+  background-color: #336699;
+}
+
+.dingbat {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #99CC99;
+  color: #006666; 
+	font-weight: bolder;
+	font-size: medium;
+}
+
+input.big {
+	width: 100px;
+}
+
+input.small {
+	width: 50px;
+}
+dl dt {
+	background-color: #0CF;
+	text-align: left;
+	font-weight: bolder;
+	font-size: medium;
+	color: #FFF;
+}

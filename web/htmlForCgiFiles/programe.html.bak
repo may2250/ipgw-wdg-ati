@@ -1,0 +1,80 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	//top.location.href = "index.html";
+}
+</script>
+
+<script language="javascript" type="text/javascript" src="/formoper.js">
+</script>
+
+<script language="javascript">
+function jsSubmit(){
+	
+	document.getElementById('result').innerHTML = "Setting ...";
+		
+	return true;
+}
+
+function jsReturn(){
+	
+	//window.location.href ="@@formparams['href']";		
+	return true;
+}
+
+function jsChkEnableVCbrVbrClick(enableId, tableId, chkId, vBitrateMinId, vBitrateMaxId){
+
+}
+</script>
+
+</head>
+
+
+<body>
+<div id="contentBase" align="center">
+	<form method="POST">
+		<input name="id" id="id" type="hidden" value="@@formparams['id']" >
+		<input name="chnId" id="chnId" type="hidden" value="@@formparams['chnId']" >
+		<input name="index" id="index" type="hidden" value="@@formparams['index']" >
+		<div input id="contentTop">Channel-@@formparams['chnId'] Service-@@formparams['index']</div>
+	  <div id="contentCenter"> 
+			<table class="inputTable" align="center">
+				<!--<tr>
+					<th>SVC-ID</th>
+					<td>@@formparams['prgId']</td>
+				</tr>
+				<tr>
+					<th>PMT-PID</th>
+					<td>@@formparams['pmtPid']</td>
+				</tr>-->
+				<tr>
+					<th>Service</th>
+					<td><input name="name" type="text" maxlength="20" value="@@formparams['name']"> </td>
+				</tr>
+				<tr>
+					<th>Provider</th>
+					<td><input name="provider" type="text" maxlength="20" value="@@formparams['provider']"> </td>
+				</tr>
+				
+			</table>
+		</div>
+		<div id="contentBottom">
+			<input type="submit" name="prgSubmit" value="Save" onClick="return jsSubmit();">
+			<input type="button" name="return" value="Return" onClick="return jsReturn();">
+		</div>
+	</form>
+</div>
+<script language="javascript" type="text/javascript" >
+<!--
+	
+	
+-->	
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+
+<script language="javascript" type="text/javascript" src="/formoper.js">
+</script>
+
+<script language="javascript">
+function jsSubmit(){
+		window.location.href ="@@formparams['ns_ch']";
+	return true;
+}
+function jsRefresh(){
+		window.location.href ="@@formparams['s_ch']";
+	return true;
+}
+function jsSet_Channel(){
+		window.location.href ="@@formparams['set_ch']";
+	return true;
+}
+function jsChkEnableVCbrVbrClick(enableId, tableId, chkId, vBitrateMinId, vBitrateMaxId){
+}
+</script>
+
+</head>
+
+
+<body>
+<div id="contentBase" align="center">
+	<form method="POST">
+		<input name="id" id="id" type="hidden" value="@@formparams['id']" >
+		<div id="contentTop" style="width:1000px;" >Channel-@@formparams['id']		</div>
+	  <div id="contentCenter" style="width:1000px; height:400px; overflow:scroll; overflow-x:hidden;">
+			<table class="inputTable" align="center" style="width:900px;">
+				<tr bgcolor="#F6F6F6">
+					<td width="80px">ID</td>
+					<td width="80px">SVC-ID</td>
+					<td width="220px">In Service</td>
+					<td width="220px">In Provider</td>
+					<td width="220px">Out Service</td>
+					<td width="220px">Out Provider</td>
+					<td >Edit</td>
+
+				</tr>
+				@@formparams['prgTable']
+			</table>
+	  </div>
+	  <div id="contentBottom">
+	  	<input name="s_ch" id="s_ch" type="hidden" value="@@formparams['s_ch']" >
+	  	<input name="ns_ch" id="ns_ch" type="hidden" value="@@formparams['ns_ch']" >
+	  	<input name="set_ch" id="set_ch" type="hidden" value="@@formparams['set_ch']" >
+	    <input name="Search_Channel" type="reset" id="Search_Channel" onClick="return jsSubmit();" value="Search">
+	    <input name="Refresh"        type="reset" id="Refresh"        onClick="return jsRefresh();" value="Refresh"> 
+			<input name="Set_Channel"    type="submit" id="Set_Channel" style="width:100px; onClick="return jsSet_Channel();" value="Set Channel">
+	  </div>
+	</form>
+</div>
+<script language="javascript" type="text/javascript" >
+<!--
+	
+	
+-->	
+</script>
+</body>
+</html>

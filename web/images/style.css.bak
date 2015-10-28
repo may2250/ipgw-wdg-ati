@@ -1,0 +1,250 @@
+/* C2 CSS Document */
+
+/* Developed by Nendoke , nendoke @ yahoo dot com , http://mzkid.deviantart.com 
+** License: GPL (http://www.gnu.org/copyleft/gpl.html)
+*/
+
+body {
+	padding:0px;
+	margin:0px;
+}
+
+h3 {
+	color: #FF3366;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+}
+
+h2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #333333;
+	background-color: #96C0EB;
+	letter-spacing: 2px;
+	padding: 3px;
+	text-align: left;
+	margin-top: 1px;
+	margin-right: 4px;
+	margin-bottom: 1px;
+	margin-left: 4px;
+	border: 1px solid #852132;
+}
+
+label {
+	color: #990000;
+	text-decoration: underline;
+	cursor: help;
+
+}
+.wrapper {
+	background-image: url(bg_border.gif);
+	background-repeat: repeat-y;
+	background-position: center top;
+}
+
+.header {
+	/*width:779px;
+	width:1003px;*/
+	height:81px;
+	background-color:#FFFFFF;
+	border: 1px solid #CCCCCC;
+	background-image: url(bg_header.jpg);
+	background-repeat: repeat-x;
+	background-position:  top;
+}
+
+.header_spacer {
+	height:81px;
+
+}
+
+
+.footer {
+	width:1003px;
+	height:40px;
+	border: 1px solid #CCCCCC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	padding-top: 3px;
+	font-weight: bold;
+}
+
+.footer_gran {
+	width:1021px;
+	height:20px;
+	background-color:#FFFFFF;
+	background-image: url(images/bg_footer.gif);
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+.menudiv {
+	padding-top: 9px;
+	color: #303030;
+	padding-left: 10px;
+	padding-right: 0px;
+	
+	width:280px;
+	height:450px;
+	background-color:#F6F6F6;	
+}
+
+#menuBtndiv {
+	clear: left;
+	float: left;
+	width: 170px;
+	margin: 0 0 10px 0;
+	padding: 0;
+	font-size: 0.9em;
+}
+
+#menuBtndiv ul {	
+	list-style: none;
+	width: 160px;
+	margin: 0 0 3px 0;
+	padding: 0;
+	font-size: 1.1em;
+}	
+
+#menuBtndiv li {
+	margin-bottom: 4px;
+}
+
+#menuBtndiv li a, #menuBtndiv li a:visited {
+	text-align: left;
+	height: 20px;
+	text-decoration: none;
+	display: block;
+	padding: 6px 8px 0 1px;
+	color: #0066CC;
+	background: #EBF3FC;
+}	
+	
+/*#menuBtndiv li a:hover {
+	background: #A9CAEB;
+	color: #286ea0;
+}*/
+
+#menuSelected
+{
+	background-color:#FFFFFF;
+	color:#003C77;
+}
+
+.menuBottomdiv {
+	margin: 2px 0 10px 0;
+	padding: 3px 10px 5px 10px;
+	width: 130px;
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	color: #6B6B6B;
+	/*background: #eee url(menuBottomdiv.gif) repeat-x;*/
+	background: #eee url(bg.gif) repeat-x;
+}
+
+.menuBottomdiv a, .menuBottomdiv a:visited {
+	text-decoration: underline;
+}
+
+#contentBase {
+
+}
+
+#contentMenu {
+	width: 800px;
+	border:1px;
+	border-style:solid;
+	border-color:#FF9900;
+	text-align:left;
+	padding: 10px 0 10px 0;
+}
+
+#contentTop {
+	padding-top: 9px;
+	padding-left: 10px;
+	padding-right: 0px;
+	color: #303030;
+	background: #F6F6F6;
+	width: 792px;
+	height: 20px;
+	margin-top:20px;
+	text-align:left;
+}
+#contentCenter{
+	width: 800px;
+	padding-left: 10px;
+	padding-right: 0px;
+	margin-top:0px;
+	text-align:center;
+	border:1px;
+	border-style:solid;
+	border-color:#FF9900;
+	padding: 20px 0 20px 0;
+	font-size: 0.9em;
+}
+#contentTop2 {
+	padding-top: 9px;
+	padding-left: 10px;
+	padding-right: 0px;
+	color: #303030;
+	background: #C6E2FF;
+	width: 792px;
+	height: 20px;
+	margin-top:10px;
+	text-align:left;
+}
+#contentCenter2{
+	width: 800px;
+	margin-top:0px;
+	text-align:center;
+	border:1px;
+	border-style:solid;
+	border-color:#FF9900;
+	padding: 5px 0 5px 0;
+	font-size: 0.9em;
+}
+#contentFish{
+	width: 800px;
+	margin-top:40px;
+	text-align:center;
+}
+#contentBottom{
+	width: 800px;
+	margin-top:40px;
+	text-align:left;
+	padding-left:60px
+}
+
+#contentBottom input{
+	width:60px;
+	margin:0 10px 0 10px
+}
+
+.inputTable{
+	border:none;
+	width:760px;
+
+}
+
+.inputTable th{
+	font-weight:normal;
+	text-align:left;
+	width: 120px;
+}
+
+.inputTable td{
+	text-align:left;
+}
+
+
+.result
+{
+	color:#F00;
+	font-weight:bolder;
+}
+
+.comboxSel
+{
+	width:100px
+}

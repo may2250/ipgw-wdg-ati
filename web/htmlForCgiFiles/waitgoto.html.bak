@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+
+<body>
+
+<script language="javascript" type="text/javascript">
+	var i = 0;  
+	var intervalid = setInterval("fun()", 10);
+
+	function fun() {  
+		if (i <= 100) { // 100
+			document.getElementById("div2").style.width=2*i+'px'; i++}
+		else{ 
+			clearInterval(intervalid); 	
+			window.location.href ="@@formparams['href']";
+			<a id="mUpload" href="/cgi-bin/index.cgi?system=1" target="contentFrame" onclick="applySelectedTo(this)" onmouseover="jsOnMouseOver(this)" onmouseout="jsOnMouseOut(this)">System</a>
+		}  
+		
+	}
+</script>
+
+<form method="GET" enctype="multipart/form-data" name="configform" action="/cgi-bin/index.cgi">
+<div id="contentBase" align="center">
+<table class="inputTable" align="center">
+	<tr>
+		<td width="160">&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><b>@@formparams['title']</b></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+			<DIV id="div0" style="background-color:#DDDDDD;border:0 solid black;height:10px;width:200px;" align="left">
+				<DIV id="div2" style="position:relative;top:0px;left:0px;background-color:#9BCDFF;height:10px;width:0px;padding-top:0px;">
+					<DIV id="div1" style="position:relative;top:0px;left:0px;color:#0000A0;text-align:center;font-size:20%;">
+					</DIV>
+				</DIV>
+			</DIV>
+		</td>
+	</tr>
+</table>
+</div>
+</form>
+</body>
+</html>

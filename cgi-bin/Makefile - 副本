@@ -1,0 +1,37 @@
+
+CROSS_TOOL = 
+LIBCGI_NAME = libcgic_pc.a
+
+#CROSS_TOOL = arm-linux-
+#LIBCGI_NAME = libcgic_arm.a
+#LIBCGI_NAME = libcgic_cygwinArm.a
+
+CC=$(CROSS_TOOL)gcc
+AR=$(CROSS_TOOL)ar
+LD=$(CROSS_TOOL)ld
+CFLAGS=-o2 -Wall
+LIBS=-L./ $(LIBCGI_NAME)
+
+APP_H = -I ../app/
+
+all: index.cgi
+
+index.cgi: cmd.o index.o tcpClient.o web.o  $(LIBCGI_NAME)
+	$(CC) $(CFLAGS) cmd.o index.o tcpClient.o web.o -o index.cgi ${LIBS}
+	cp -rf index.cgi /home/shawn/1_works/0_bin
+
+index.o: index.c 
+	$(CC) $(CFLAGS)  $(APP_H) -c  index.c -o index.o
+
+web.o: web.c  web.h
+	$(CC) $(CFLAGS)  $(APP_H) -c web.c -o web.o
+
+cmd.o: cmd.c cmd.h 
+	$(CC) $(CFLAGS)  $(APP_H) -c cmd.c -o cmd.o
+
+tcpClient.o: tcpClient.c tcpClient.h 
+	$(CC) $(CFLAGS)  $(APP_H) -c tcpClient.c -o tcpClient.o
+
+clean:
+	rm -f *.o index.cgi
+

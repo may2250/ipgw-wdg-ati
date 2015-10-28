@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/images/style.css" />
+
+<script type="text/javascript">
+if (window == top)
+{
+	top.location.href = "index.html";
+}
+</script>
+
+<script language="javascript" type="text/javascript" src="/formoper.js">
+</script>
+
+
+<script language="javascript" type="text/javascript">
+
+function jsSubmit(){
+	if(jsErrorInputIp(document.forms[0].ip, "IP input error! Please enter again.")){
+		return false;}
+	if(jsErrorInputIp(document.forms[0].mask, "Mask input error! Please enter again."))
+		return false;
+	if(jsErrorInputIp(document.forms[0].gw, "Gateway input error! Please enter again.")){
+		return false;}
+	document.getElementById('result').innerHTML = "Setting ...";
+	return true;
+}
+</script>
+
+</head>
+<body>
+<div id="contentBase" align="center">
+	<form method="POST">
+		<div id="contentTop">Network	
+		</div>
+		<div id="contentCenter">
+			<table class="inputTable" align="center">
+				<tr>
+					<th>IP:</th>
+					<td><input name="ip" type="text" size="15" maxlength="15" value="@@formparams['ip']"> e.g.,192.168.1.232</td> 
+				</tr>
+				<tr>
+					<th>Mask:</th>
+					<td><input name="mask" type="text" size="15" maxlength="15" value="@@formparams['mask']"> e.g.,255.255.255.0</td>
+				</tr>
+				<tr>
+					<th>Gateway:</th>
+					<td><input name="gw" type="text" size="15" maxlength="15" value="@@formparams['gw']"> e.g.,192.168.1.1</td>
+				</tr>
+        <tr>
+					<th>MAC:</th>
+					<td><input type="text"  readOnly="true" disabled="true" name="mac" type="text" size="17" maxlength="17" value="@@formparams['mac']"> e.g.,00:11:AA:22:BB:01</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="contentBottom">
+			<input type="submit" name="netSubmit" value="Save" onClick="return jsSubmit();">
+		</div>
+	</form>
+</div>
+</body>
+</html>
