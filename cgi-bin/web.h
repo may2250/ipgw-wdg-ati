@@ -1,6 +1,9 @@
 #ifndef INC_WEB_H
 #define INC_WEB_H
 
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h> 
 #include "dataType.h"
 
 /*extern void WebGet_encoder();
@@ -12,6 +15,9 @@ extern void WebGet_transmit();
 extern void WebSubmit_transmit();*/
 
 extern void WebGet_Status();
+extern void parse_tsipnode(xmlNodePtr curr);
+extern void parse_channelnode(xmlNodePtr curr);
+extern void parse_trapsevernode(xmlNodePtr curr);
 extern void WebGet_Import();
 extern void WebGet_Export();
 extern void WebGet_Backup();

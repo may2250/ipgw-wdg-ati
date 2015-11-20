@@ -23,9 +23,12 @@ function jsSubmit(){
 		return false;
 	if(jsErrorInputIp(document.forms[0].gw, "Gateway input error! Please enter again.")){
 		return false;}
+	if(jsErrorInputIp(document.forms[0].trapserverip, "TrapServerIP input error! Please enter again.")){
+		return false;}
 	document.getElementById('result').innerHTML = "Setting ...";
 	return true;
 }
+
 </script>
 
 </head>
@@ -48,16 +51,15 @@ function jsSubmit(){
 					<th>Gateway:</th>
 					<td><input name="gw" type="text" size="15" maxlength="15" value="@@formparams['gw']"> e.g.,192.168.1.1</td>
 				</tr>
-        <!--tr>
-					<th>MAC:</th>
-					<td><input type="text"  readOnly="true" disabled="true" name="mac" type="text" size="17" maxlength="17" value="@@formparams['mac']"> e.g.,00:11:AA:22:BB:01</td>
-				</tr-->
+				<tr>
+					<th>TrapServerIp:</th>
+					<td><input name="trapserverip" type="text" size="15" maxlength="15" value="@@formparams['trapserverip']"> e.g.,192.168.1.251</td> 
+				</tr>
 			</table>
-		</div>
-		
-		<div id="contentBottom">
-			<input type="submit" name="netSubmit" value="Save" onClick="return jsSubmit();">
-		</div>
+			<div id="contentBottom">
+				<input type="submit" name="netSubmit" value="Save" onClick="return jsSubmit();">
+			</div>
+		</div>	
 	</form>
 </div>
 </body>

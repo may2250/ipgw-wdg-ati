@@ -22,6 +22,7 @@ if (window == top)
     };
     
     function back_export() {
+
         function writeFile(data) {
             var BB = this.Blob;
             saveAs(
@@ -29,17 +30,20 @@ if (window == top)
                       [data]
                     , {type: "text/plain;charset=" + document.characterSet}
                 )
-                , "bakup.json"
+                , "bakup.xml"
             );
           }
         //get back up data
         $.ajax({
             type: "GET",
             url: "/cgi-bin/index.cgi?Export=1",
-            dataType: "json",
+            dataType: "xml",
             success: function(data){
-                alert(JSON.stringify(data));
-                writeFile(JSON.stringify(data));          
+                //alert(JSON.stringify(data));
+                //writeFile(JSON.stringify(data));
+
+				var xmlstr =(new XMLSerializer()).serializeToString(data);
+				writeFile(xmlstr);   
                  
             },
             error : function(err) {
@@ -57,12 +61,7 @@ if (window == top)
             filename = file.name.split(".")[0];
             var reader = new FileReader();
             reader.onload = function() {
-                var paramjson = this.result;
-                $('#updatas').val($.trim(paramjson));
-                if(JSON.parse(paramjson) == "undefined"){
-                    document.getElementById("btn_import").disabled = true;
-                    return;
-                }
+                $('#updatas').val($.trim(this.result));
                 document.getElementById("btn_import").disabled = false;
             }
             reader.readAsText(file);

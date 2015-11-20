@@ -1,6 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "cgic.h"
 #include "cJSON.h"
@@ -550,20 +551,29 @@ void WebGet_net()
 	char ipStr[15]="192.168.000.119";
 	char maskStr[]="255.255.255.000";
 	char gatewayStr[]="192.168.000.1";
-	char macStr[]="C0:A8:01:02:03:06";
+	//char macStr[]="C0:A8:01:02:03:06";
+	char trapipStr[15]="192.168.001.251";
 	StHtml2Cgi_item_t items[]= {
 		{"@@formparams['ip']", ipStr, NULL, EmValueType_null},
 		{"@@formparams['mask']", maskStr, NULL, EmValueType_null},
 		{"@@formparams['gw']", gatewayStr, NULL, EmValueType_null},
-		{"@@formparams['mac']", macStr, NULL, EmValueType_null},
+		{"@@formparams['trapserverip']", trapipStr, NULL, EmValueType_null},
+		//{"@@formparams['mac']", macStr, NULL, EmValueType_null},		
 	};
 	if(Cmd_getNet())
 	{
 		sprintf(ipStr, "%d.%d.%d.%d", gChn.my_ip[0],  gChn.my_ip[1],  gChn.my_ip[2],  gChn.my_ip[3]);
 		sprintf(maskStr, "%d.%d.%d.%d", gChn.my_mask[0],  gChn.my_mask[1],  gChn.my_mask[2],  gChn.my_mask[3]);
 		sprintf(gatewayStr, "%d.%d.%d.%d", gChn.my_gateway[0],  gChn.my_gateway[1],  gChn.my_gateway[2],  gChn.my_gateway[3]);
-		sprintf(macStr, "%X:%X:%X:%X:%X:%X", gChn.my_mac[0],  gChn.my_mac[1],  gChn.my_mac[2],  gChn.my_mac[3],  gChn.my_mac[4],  gChn.my_mac[5]);
+		//sprintf(macStr, "%X:%X:%X:%X:%X:%X", gChn.my_mac[0],  gChn.my_mac[1],  gChn.my_mac[2],  gChn.my_mac[3],  gChn.my_mac[4],  gChn.my_mac[5]);
 	}
+	int i = 0, len = 0;
+	char trapserver[15] = {0};
+    int file = open( "/mnt/Nand2/net-snmp-arm/trapserver.txt", O_RDONLY );
+	read(file, trapserver, sizeof(trapserver));
+    close( file );
+	sprintf(trapipStr, "%s", trapserver);
+	//memcpy(trapipStr, trapserver, strlen(trapserver));
 	Html2Cgi_parse(WEB_NET_HTML
 		, items, sizeof(items)/sizeof(StHtml2Cgi_item_t));
 }
@@ -599,18 +609,314 @@ void WebGet_Status()
 	}
 }
 
+void parse_tsipnode(xmlNodePtr curr){
+	xmlNodePtr tmpnode;
+	tmpnode = curr->xmlChildrenNode;
+	u32_t tmpU32;
+	char *szKey;
+	while(tmpnode != NULL){
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"su_ip")))
+		{
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.su_ip[0]=tmpU32>>24;gChn.su_ip[1]=tmpU32>>16;gChn.su_ip[2]=tmpU32>>8;gChn.su_ip[3]=tmpU32>>0;						
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"su_port"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.su_port = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"udp_ttl"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.udp_ttl = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"su_mac"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.su_mac);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip0"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[0][0]=tmpU32>>24;gChn.de_ip[0][1]=tmpU32>>16;gChn.de_ip[0][2]=tmpU32>>8;gChn.de_ip[0][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip1"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[1][0]=tmpU32>>24;gChn.de_ip[1][1]=tmpU32>>16;gChn.de_ip[1][2]=tmpU32>>8;gChn.de_ip[1][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip2"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[2][0]=tmpU32>>24;gChn.de_ip[2][1]=tmpU32>>16;gChn.de_ip[2][2]=tmpU32>>8;gChn.de_ip[2][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip3"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[3][0]=tmpU32>>24;gChn.de_ip[3][1]=tmpU32>>16;gChn.de_ip[3][2]=tmpU32>>8;gChn.de_ip[3][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip4"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[4][0]=tmpU32>>24;gChn.de_ip[4][1]=tmpU32>>16;gChn.de_ip[4][2]=tmpU32>>8;gChn.de_ip[4][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip5"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[5][0]=tmpU32>>24;gChn.de_ip[5][1]=tmpU32>>16;gChn.de_ip[5][2]=tmpU32>>8;gChn.de_ip[5][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip6"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[6][0]=tmpU32>>24;gChn.de_ip[6][1]=tmpU32>>16;gChn.de_ip[6][2]=tmpU32>>8;gChn.de_ip[6][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_ip7"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			tmpU32 = NetAddr_ipStr2CmdT(szKey, 23);
+			gChn.de_ip[7][0]=tmpU32>>24;gChn.de_ip[7][1]=tmpU32>>16;gChn.de_ip[7][2]=tmpU32>>8;gChn.de_ip[7][3]=tmpU32>>0;
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port0"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[0] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port1"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[1] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port2"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[2] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port3"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[3] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port4"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[4] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port5"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[5] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port6"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[6] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_port7"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.de_port[7] = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac0"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[0]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac1"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[1]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac2"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[2]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac3"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[3]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac4"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[4]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac5"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[5]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac6"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[6]);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"de_mac7"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			NetAddr_macStr2Bytes(szKey,21,gChn.de_mac[7]);
+			xmlFree(szKey);
+		}
+		tmpnode = tmpnode->next;
+	}
+}
+
+void parse_channelnode(xmlNodePtr curr){
+	xmlNodePtr tmpnode;
+	tmpnode = curr->xmlChildrenNode;
+	char *szKey;
+	int chnid = 1, cnt = 0;
+	char datastr[32]= {0};
+	while(tmpnode != NULL){		
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"serviceChnid"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			chnid = atoi(szKey);
+			xmlFree(szKey);
+		}else if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"serviceCnt"))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.serviceCnt = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_chnId", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].chnId = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_isMuxed", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].isMuxed = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_prgId", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].prgId = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_pmtPid", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].pmtPid = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_name_len", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].name_len = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_name", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			memcpy(gChn.service[cnt].name, szKey, strlen(szKey));
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_provider_len", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].provider_len = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_provider", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			memcpy(gChn.service[cnt].provider, szKey, strlen(szKey));
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service%d_isCA", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service[cnt].isCA = atoi(szKey);
+			xmlFree(szKey);
+		}		
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service_o_%d_name_len", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service_o[cnt].name_len = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service_o_%d_name", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			memcpy(gChn.service_o[cnt].name, szKey, strlen(szKey));
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service_o_%d_provider_len", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			gChn.service_o[cnt].provider_len = atoi(szKey);
+			xmlFree(szKey);
+		}
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "service_o_%d_provider", cnt);
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)datastr))){
+			szKey = xmlNodeGetContent(tmpnode);
+			memcpy(gChn.service_o[cnt].provider, szKey, strlen(szKey));
+			xmlFree(szKey);
+			cnt++;
+		}
+		tmpnode = tmpnode->next;
+	}
+	if(gChn.serviceCnt > 0){
+		Cmd_setChannel(chnid);
+	}	
+}
+
+void parse_trapsevernode(xmlNodePtr curr){
+	xmlNodePtr tmpnode;
+	tmpnode = curr->xmlChildrenNode;
+	char *szKey;
+	while(tmpnode != NULL){
+		if((!xmlStrcmp(tmpnode->name, (const xmlChar*)"trapserverip"))){
+			szKey = xmlNodeGetContent(tmpnode);			
+			int fd;
+			fd=open("/mnt/Nand2/net-snmp-arm/trapserver.txt",O_WRONLY|O_CREAT);
+			write(fd, szKey, strlen(szKey));
+			close(fd);
+			xmlFree(szKey);
+		}
+		tmpnode = tmpnode->next;
+	}	
+}
+
 void WebGet_Import()
 {
-	char updatas[10240] = {0};
+	char updatas[20480] = {0};
 	char datastr[32]= {0};
-	u32_t tmpU32;
-	int i = 0, j = 0;
-	if(cgiFormSuccess != cgiFormString("updatas", updatas, 10240))
+    xmlNodePtr root, curr;	
+	
+	if(cgiFormSuccess != cgiFormString("updatas", updatas, sizeof(updatas)))
 	{
 		Html2Cgi_waitGoto("/cgi-bin/index.cgi?transmit=1", "Import datas Err,Please Check!");
 		return;
 	}
-	cJSON *backupdatas = cJSON_Parse(updatas);
+	Html2Cgi_waitGoto("/cgi-bin/index.cgi?transmit=1", "Importing......");
+	xmlDocPtr pdoc = xmlParseMemory(updatas, sizeof(updatas));
+	root = xmlDocGetRootElement(pdoc);
+	curr = root->xmlChildrenNode;
+	while(curr != NULL){  
+		if((!xmlStrcmp(curr->name, (const xmlChar*)"_tsip"))){
+			parse_tsipnode(curr);			
+			Cmd_SetTS2IP();
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel1"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel2"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel3"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel4"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel5"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel6"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel7"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_channel8"))){
+			parse_channelnode(curr);			
+		}else if((!xmlStrcmp(curr->name, (const xmlChar*)"_trapserverip"))){
+			parse_trapsevernode(curr);		
+		}
+		curr = curr->next;
+	}
+	
+	xmlFreeDoc(pdoc);
+	/*cJSON *backupdatas = cJSON_Parse(updatas);
 	cJSON *tsip = cJSON_GetObjectItem(backupdatas, "_tsip");
 	char *su_ip = cJSON_GetObjectItem(tsip, "su_ip")->valuestring;
 	tmpU32 = NetAddr_ipStr2CmdT(su_ip, 23);
@@ -706,17 +1012,215 @@ void WebGet_Import()
 		}
 		Cmd_setChannel(i);
 	}
-	
+	cJSON *trapsip = cJSON_GetObjectItem(backupdatas, "_trapserverip");
+	char *trapip = cJSON_GetObjectItem(trapsip, "trapserverip")->valuestring;
+	int fd;
+	fd=open("/mnt/Nand2/net-snmp-arm/trapserver.txt",O_WRONLY|O_CREAT);
+	write(fd, trapip, strlen(trapip));
+	close(fd);
+	*/
 }
 
 void WebGet_Export()
 {
-	int i = 0, j = 0;
+	xmlDocPtr doc = NULL;
+	xmlNodePtr root_node = NULL, node = NULL;
+	xmlChar *xmlbuff;
+	int buffersize;
+	char datastr[32]= {0};
 	if(Cmd_getTS2IP())
 	{
-		cJSON *basejson,*itemjson, *itemarry, *subjson;
-		cgiHeaderContentType("application/json"); 
-		basejson = cJSON_CreateObject();
+		cgiHeaderContentType("application/xml");
+		// Creates a new document, a node and set it as a root node
+		doc = xmlNewDoc(BAD_CAST "1.0");
+		root_node = xmlNewNode(NULL, BAD_CAST "root");
+		xmlDocSetRootElement(doc, root_node);
+		//Here goes another way to create nodes.
+		node = xmlNewNode(NULL, BAD_CAST "_tsip");
+		sprintf(datastr, "%d.%d.%d.%d", gChn.su_ip[0],  gChn.su_ip[1],  gChn.su_ip[2],  gChn.su_ip[3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "su_ip", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.su_port);
+		xmlNewTextChild(node, NULL, BAD_CAST "su_port", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.udp_ttl);
+		xmlNewTextChild(node, NULL, BAD_CAST "udp_ttl", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.su_mac[0],  gChn.su_mac[1],  gChn.su_mac[2],  gChn.su_mac[3],  gChn.su_mac[4],  gChn.su_mac[5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "su_mac", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[0][0],  gChn.de_ip[0][1],  gChn.de_ip[0][2],  gChn.de_ip[0][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip0", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[1][0],  gChn.de_ip[1][1],  gChn.de_ip[1][2],  gChn.de_ip[1][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip1", datastr);
+		memset(datastr, 0, sizeof(datastr));	
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[2][0],  gChn.de_ip[2][1],  gChn.de_ip[2][2],  gChn.de_ip[2][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip2", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[3][0],  gChn.de_ip[3][1],  gChn.de_ip[3][2],  gChn.de_ip[3][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip3", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[4][0],  gChn.de_ip[4][1],  gChn.de_ip[4][2],  gChn.de_ip[4][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip4", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[5][0],  gChn.de_ip[5][1],  gChn.de_ip[5][2],  gChn.de_ip[5][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip5", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[6][0],  gChn.de_ip[6][1],  gChn.de_ip[6][2],  gChn.de_ip[6][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip6", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d.%d.%d.%d", gChn.de_ip[7][0],  gChn.de_ip[7][1],  gChn.de_ip[7][2],  gChn.de_ip[7][3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_ip7", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[0]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port0", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[1]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port1", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[2]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port2", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[3]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port3", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[4]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port4", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port5", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[6]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port6", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%d", gChn.de_port[7]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_port7", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[0][0],  gChn.de_mac[0][1],  gChn.de_mac[0][2],  gChn.de_mac[0][3],  gChn.de_mac[0][4],  gChn.de_mac[0][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac0", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[1][0],  gChn.de_mac[1][1],  gChn.de_mac[1][2],  gChn.de_mac[1][3],  gChn.de_mac[1][4],  gChn.de_mac[1][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac1", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[2][0],  gChn.de_mac[2][1],  gChn.de_mac[2][2],  gChn.de_mac[2][3],  gChn.de_mac[2][4],  gChn.de_mac[2][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac2", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[3][0],  gChn.de_mac[3][1],  gChn.de_mac[3][2],  gChn.de_mac[3][3],  gChn.de_mac[3][4],  gChn.de_mac[3][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac3", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[4][0],  gChn.de_mac[4][1],  gChn.de_mac[4][2],  gChn.de_mac[4][3],  gChn.de_mac[4][4],  gChn.de_mac[4][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac4", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[5][0],  gChn.de_mac[5][1],  gChn.de_mac[5][2],  gChn.de_mac[5][3],  gChn.de_mac[5][4],  gChn.de_mac[5][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac5", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[6][0],  gChn.de_mac[6][1],  gChn.de_mac[6][2],  gChn.de_mac[6][3],  gChn.de_mac[6][4],  gChn.de_mac[6][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac6", datastr);
+		memset(datastr, 0, sizeof(datastr));
+		sprintf(datastr, "%02X:%02X:%02X:%02X:%02X:%02X", gChn.de_mac[7][0],  gChn.de_mac[7][1],  gChn.de_mac[7][2],  gChn.de_mac[7][3],  gChn.de_mac[7][4],  gChn.de_mac[7][5]);
+		xmlNewTextChild(node, NULL, BAD_CAST "de_mac7", datastr);		
+		xmlAddChild(root_node, node);
+		int i = 0, j = 0;
+		char tmpstr[32] = {0};
+		for(i = 1; i <9; i++){
+			memset(datastr, 0, sizeof(datastr));
+			sprintf(datastr, "_channel%d", i);
+			node = xmlNewNode(NULL, BAD_CAST datastr);
+			Cmd_getChannel(i,1);
+			memset(datastr, 0, sizeof(datastr));
+			sprintf(datastr, "%d", i);
+			xmlNewTextChild(node, NULL, BAD_CAST "serviceChnid", datastr);
+			memset(datastr, 0, sizeof(datastr));
+			sprintf(datastr, "%d", gChn.serviceCnt);
+			xmlNewTextChild(node, NULL, BAD_CAST "serviceCnt", datastr);			
+			for(j = 0; j < gChn.serviceCnt; j++)
+			{
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_chnId", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].chnId);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_isMuxed", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].isMuxed);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_prgId", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].prgId);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_pmtPid", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].pmtPid);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_name_len", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].name_len);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_name", j);
+				xmlNewTextChild(node, NULL, tmpstr, gChn.service[j].name);		
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_provider_len", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].provider_len);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_provider", j);
+				xmlNewTextChild(node, NULL, tmpstr, gChn.service[j].provider);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service%d_isCA", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service[j].isCA);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);	
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service_o_%d_name_len", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service_o[j].name_len);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service_o_%d_name", j);
+				xmlNewTextChild(node, NULL, tmpstr, gChn.service_o[j].name);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service_o_%d_provider_len", j);
+				memset(datastr, 0, sizeof(datastr));
+				sprintf(datastr, "%d", gChn.service_o[j].provider_len);
+				xmlNewTextChild(node, NULL, tmpstr, datastr);
+				memset(tmpstr, 0, sizeof(tmpstr));
+				sprintf(tmpstr, "service_o_%d_provider", j);
+				xmlNewTextChild(node, NULL, tmpstr, gChn.service_o[j].provider);
+			}		
+			
+			xmlAddChild(root_node, node);			
+		}
+		node = xmlNewNode(NULL, BAD_CAST "_trapserverip");
+		int fd=open("/mnt/Nand2/net-snmp-arm/trapserver.txt", O_RDONLY);
+		memset(datastr, 0, sizeof(datastr));
+		read(fd, datastr, sizeof(datastr));
+		close(fd);
+		xmlNewTextChild(node, NULL, BAD_CAST "trapserverip", datastr);
+		xmlAddChild(root_node, node);
+			
+		xmlDocDumpFormatMemory(doc, &xmlbuff, &buffersize, 1);
+		CgiPrint((char *)xmlbuff);
+		xmlFreeDoc(doc);
+		xmlCleanupParser();
+		xmlMemoryDump();//debug memory for regression tests 
+	
+	}
+	
+	
+	/*int i = 0, j = 0;
+	if(Cmd_getTS2IP())
+	{
+		cJSON *rootjson, *basejson,*itemjson, *itemarry, *subjson;
+		cgiHeaderContentType("application/json");
+		rootjson= cJSON_CreateObject();
+		cJSON_AddItemToObject(rootjson, "root", basejson= cJSON_CreateObject());
 		cJSON_AddItemToObject(basejson, "_tsip", itemjson= cJSON_CreateObject());
 		char datastr[32]= {0};
 		sprintf(datastr, "%d.%d.%d.%d", gChn.su_ip[0],  gChn.su_ip[1],  gChn.su_ip[2],  gChn.su_ip[3]);
@@ -834,12 +1338,19 @@ void WebGet_Export()
 			}
 		
 		}
-		CgiPrint(cJSON_PrintUnformatted(basejson));
+		cJSON_AddItemToObject(basejson, "_trapserverip", itemjson= cJSON_CreateObject());
+		int fd=open("/mnt/Nand2/net-snmp-arm/trapserver.txt", O_RDONLY);
+		memset(datastr, 0, sizeof(datastr));
+		read(fd, datastr, sizeof(datastr));
+		close(fd);
+		cJSON_AddStringToObject(itemjson, "trapserverip", datastr);
 		
-		cJSON_Delete(basejson);
-	
+		
+		CgiPrint(cJSON_PrintUnformatted(rootjson));		
+		cJSON_Delete(rootjson);
+		
 	}
-	
+	*/
 }
 
 void WebGet_Backup()
@@ -860,6 +1371,7 @@ void WebSubmit_net()
 	char ipBuf[IP_MASK_BUF_MAXLEN+1];
 	char ipMaskBuf[IP_MASK_BUF_MAXLEN+1];
 	char ipGatewayBuf[IP_MASK_BUF_MAXLEN+1];
+	char trapipBuf[IP_MASK_BUF_MAXLEN+1];
 	
 	char href[32], title[32];
 	u32_t tmpU32;
@@ -881,6 +1393,11 @@ void WebSubmit_net()
 		Html2Cgi_waitGoto(href, "Save IP Gateway Addr Err,Please Check!");
 		return;
 	}
+	if(cgiFormSuccess != cgiFormString("trapserverip", trapipBuf, 23))
+	{
+		Html2Cgi_waitGoto(href, "Save TrapServerIP Addr Err,Please Check!");
+		return;
+	}
 
 	tmpU32 = NetAddr_ipStr2CmdT(ipBuf, 23);
      gChn.my_ip[0]=tmpU32>>24;
@@ -898,10 +1415,20 @@ void WebSubmit_net()
      gChn.my_gateway[0]=tmpU32>>24;
 	gChn.my_gateway[1]=tmpU32>>16;
 	gChn.my_gateway[2]=tmpU32>>8;
-	gChn.my_gateway[3]=tmpU32>>0;
-	sprintf(title, "Saving Network ...");//"正在保存 [网络参数] ...");
-	Html2Cgi_waitGoto(href, title);
+	gChn.my_gateway[3]=tmpU32>>0;	
 	Cmd_submitNet();
+	//change trap ip
+	int fd;
+	char trapstr[15] = {0};
+	fd=open("/mnt/Nand2/net-snmp-arm/trapserver.txt",O_WRONLY|O_CREAT);
+	read(fd, trapstr, sizeof(trapstr));
+	
+	if(strcmp(trapstr, trapipBuf)){
+		write(fd, trapipBuf, 15);
+	}
+	sprintf(title, "Saving Network ...");
+	Html2Cgi_waitGoto(href, title);
+	close(fd);
 }
 
 void WebGet_system()

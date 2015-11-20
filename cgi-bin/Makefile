@@ -19,8 +19,10 @@ LIBCGI_NAME = libcgic_arm.a
 CFLAGS=-o2 -Wall -DARM_OS
 TARGET_FOLD = /home/nfs/wdt-ati
 CFLAGS +="-I/opt/eldk-4.2/arm/usr/include/"
+CFLAGS +="-I/home/long/Downloads/libxml2/include/libxml2"
 LDFLAGS += "-Wl,-rpath,/opt/eldk-4.1/arm/lib/"
-LDFLAGS += -L./ -lm
+LDFLAGS += "-L/home/long/Downloads/libxml2/lib"
+LDFLAGS += -L./ -lm -lxml2
 #----------------------------------------------------------------------------------
 endif
 ################################
